@@ -1,0 +1,82 @@
+fileFormatVersion: 2
+guid: b9d8cb430fe5c1b47bdd3db4a0551080
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: _MapPrfab/Map
+    100002: _MapPrfab/Map/Background
+    100004: _MapPrfab/Map/Foreground
+    100006: _MapPrfab/Map/Objects
+    100008: _MapPrfab/Map/Objects/block
+    100010: _MapPrfab/Map/Objects/block (1)
+    100012: _MapPrfab/Map/Objects/block (2)
+    100014: _MapPrfab/Map/Objects/block (3)
+    100016: _MapPrfab/Map/Objects/block (4)
+    100018: _MapPrfab/Map/Objects/block (5)
+    400000: _MapPrfab/Map/Transform
+    400002: _MapPrfab/Map/Background/Transform
+    400004: _MapPrfab/Map/Foreground/Transform
+    400006: _MapPrfab/Map/Objects/Transform
+    400008: _MapPrfab/Map/Objects/block/Transform
+    400010: _MapPrfab/Map/Objects/block (1)/Transform
+    400012: _MapPrfab/Map/Objects/block (2)/Transform
+    400014: _MapPrfab/Map/Objects/block (3)/Transform
+    400016: _MapPrfab/Map/Objects/block (4)/Transform
+    400018: _MapPrfab/Map/Objects/block (5)/Transform
+    6100000: _MapPrfab/Map/Objects/block/BoxCollider2D
+    6100002: _MapPrfab/Map/Objects/block (1)/BoxCollider2D
+    6100004: _MapPrfab/Map/Objects/block (2)/BoxCollider2D
+    6100006: _MapPrfab/Map/Objects/block (3)/BoxCollider2D
+    6100008: _MapPrfab/Map/Objects/block (4)/BoxCollider2D
+    6100010: _MapPrfab/Map/Objects/block (5)/BoxCollider2D
+    11400000: _MapPrfab/Map/MonoBehaviour-SuperTiled2Unity.SuperMap
+    11400002: _MapPrfab/Map/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400004: _MapPrfab/Map/Background/MonoBehaviour-SuperTiled2Unity.SuperTileLayer
+    11400006: _MapPrfab/Map/Background/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400008: _MapPrfab/Map/Background/MonoBehaviour-SuperTiled2Unity.TilemapData
+    11400010: _MapPrfab/Map/Foreground/MonoBehaviour-SuperTiled2Unity.SuperTileLayer
+    11400012: _MapPrfab/Map/Foreground/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400014: _MapPrfab/Map/Foreground/MonoBehaviour-SuperTiled2Unity.TilemapData
+    11400016: _MapPrfab/Map/Objects/MonoBehaviour-SuperTiled2Unity.SuperObjectLayer
+    11400018: _MapPrfab/Map/Objects/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400020: _MapPrfab/Map/Objects/block/MonoBehaviour-SuperTiled2Unity.SuperObject
+    11400022: _MapPrfab/Map/Objects/block/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
+    11400024: _MapPrfab/Map/Objects/block/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400026: _MapPrfab/Map/Objects/block (1)/MonoBehaviour-SuperTiled2Unity.SuperObject
+    11400028: _MapPrfab/Map/Objects/block (1)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
+    11400030: _MapPrfab/Map/Objects/block (1)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400032: _MapPrfab/Map/Objects/block (2)/MonoBehaviour-SuperTiled2Unity.SuperObject
+    11400034: _MapPrfab/Map/Objects/block (2)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
+    11400036: _MapPrfab/Map/Objects/block (2)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400038: _MapPrfab/Map/Objects/block (3)/MonoBehaviour-SuperTiled2Unity.SuperObject
+    11400040: _MapPrfab/Map/Objects/block (3)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
+    11400042: _MapPrfab/Map/Objects/block (3)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400044: _MapPrfab/Map/Objects/block (4)/MonoBehaviour-SuperTiled2Unity.SuperObject
+    11400046: _MapPrfab/Map/Objects/block (4)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
+    11400048: _MapPrfab/Map/Objects/block (4)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400050: _MapPrfab/Map/Objects/block (5)/MonoBehaviour-SuperTiled2Unity.SuperObject
+    11400052: _MapPrfab/Map/Objects/block (5)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
+    11400054: _MapPrfab/Map/Objects/block (5)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400056: _superAsset
+    100100000: _MapPrfab
+    2569400265252428796: _MapPrfab/Map/Grid
+    3664157343022684176: _MapPrfab/Map/Background/TilemapRenderer
+    3664157343022684178: _MapPrfab/Map/Foreground/TilemapRenderer
+    8195094279510102542: _MapPrfab/Map/Background/Tilemap
+    8195094279510102544: _MapPrfab/Map/Foreground/Tilemap
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 1fa25d03934ea624a82bf2fcee6f0873, type: 3}
+  errors: []
+  warnings: []
+  missingSortingLayers: []
+  missingLayers: []
+  pixelsPerUnit: 1
+  edgesPerEllipse: 32
+  numberOfObjectsImported: 2
+  tilesAsObjects: 0
+  importSorting: 0
+  isIsometric: 0
+  customImporterClassName: 
+  internalTilesets: []

@@ -1,0 +1,34 @@
+fileFormatVersion: 2
+guid: b4733ffe5be44214499d86ea666f6acc
+ScriptedImporter:
+  fileIDToRecycleName:
+    100000: _main/appearing-block
+    400000: _main/appearing-block/Transform
+    2800000: tex2d_0
+    2800002: tex2d_1
+    2800004: tex2d_2
+    2800006: tex2d_3
+    2800008: tex2d_4
+    7400000: anim_Untagged
+    7400002: anim_Appearing
+    9500000: _main/appearing-block/Animator
+    21200000: _main/appearing-block/SpriteRenderer
+    21300000: sprite_0
+    21300002: sprite_1
+    21300004: sprite_2
+    21300006: sprite_3
+    21300008: sprite_4
+    100100000: _main
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: b1577cdc41d01fa4dbf68ad51122a765, type: 3}
+  pixelsPerUnit: 1
+  spriteAtlas: {instanceID: 0}
+  frameRate: 60
+  sortingLayerName: 
+  sortingOrder: 0
+  animatorCullingMode: 0
+  animatorController: {fileID: 9100000, guid: 7110519dd4e803a4eb142bff1f4d72cc, type: 2}
+  errors: []

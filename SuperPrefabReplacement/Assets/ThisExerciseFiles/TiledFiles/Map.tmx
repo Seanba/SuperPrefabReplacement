@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="16" height="14" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="15">
+ <tileset firstgid="1" source="omega.tsx"/>
+ <layer id="1" name="Background" width="16" height="14">
+  <data encoding="csv">
+161,161,122,161,161,161,161,161,161,161,161,161,161,161,161,161,
+161,161,161,161,161,161,161,161,161,161,161,161,122,161,161,161,
+161,161,161,161,161,161,161,122,160,161,161,161,161,161,161,161,
+161,161,161,161,161,121,161,161,161,161,161,161,161,161,161,161,
+161,161,161,122,161,161,161,161,161,123,161,161,161,161,161,161,
+161,161,161,161,161,161,161,161,161,161,161,118,119,120,161,161,
+161,161,161,161,161,161,161,162,161,161,161,157,158,159,161,161,
+161,161,161,161,161,161,122,161,161,161,161,161,159,161,161,161,
+161,161,161,161,161,161,161,161,161,161,161,161,159,161,161,161,
+161,161,161,161,161,161,161,161,161,161,160,161,161,161,161,161,
+161,161,161,123,161,161,161,161,161,161,161,161,161,159,161,161,
+161,161,161,161,161,161,161,161,122,161,161,161,161,159,161,161,
+161,118,119,120,161,161,161,161,161,161,161,161,161,161,161,161,
+161,157,158,159,161,161,161,161,161,161,161,161,161,161,161,161
+</data>
+ </layer>
+ <layer id="2" name="Foreground" width="16" height="14">
+  <data encoding="csv">
+13,47,48,86,87,87,87,87,87,87,87,87,87,88,47,13,
+91,47,48,0,0,0,0,0,0,0,0,0,0,0,47,91,
+13,47,48,0,0,0,0,0,0,0,0,0,0,0,47,13,
+13,47,0,0,0,0,0,0,0,0,0,0,0,0,47,13,
+91,47,0,0,0,0,0,0,0,0,0,0,0,0,47,52,
+52,47,0,0,0,0,0,0,0,0,0,0,0,0,47,13,
+13,47,0,0,0,0,0,0,0,0,0,0,0,0,47,13,
+13,47,0,0,0,0,0,0,0,0,0,0,0,0,47,13,
+52,47,0,0,0,0,0,0,0,0,0,0,0,0,47,13,
+13,47,0,0,0,0,0,0,0,0,0,0,0,0,47,91,
+13,47,0,0,0,0,0,0,0,0,0,0,0,0,47,13,
+13,47,0,0,0,0,0,0,0,0,0,0,0,0,47,13,
+91,47,0,0,0,0,0,0,0,0,0,0,0,0,47,52,
+13,47,8,9,9,9,9,9,9,9,9,9,10,48,47,13
+</data>
+ </layer>
+ <objectgroup id="3" name="Objects">
+  <object id="7" name="block" type="AppearingBlock" x="96" y="64" width="16" height="16">
+   <properties>
+    <property name="GroupNumber" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="9" name="block" type="AppearingBlock" x="160" y="112" width="16" height="16">
+   <properties>
+    <property name="GroupNumber" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="10" name="block" type="AppearingBlock" x="144" y="48" width="16" height="16">
+   <properties>
+    <property name="GroupNumber" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="11" name="block" type="AppearingBlock" x="80" y="144" width="16" height="16">
+   <properties>
+    <property name="GroupNumber" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="12" name="block" type="AppearingBlock" x="144" y="160" width="16" height="16"/>
+  <object id="13" name="block" type="AppearingBlock" x="48" y="49" width="16" height="16"/>
+ </objectgroup>
+</map>
