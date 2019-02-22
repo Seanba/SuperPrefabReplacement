@@ -28,7 +28,7 @@ ScriptedImporter:
   spriteAtlas: {instanceID: 0}
   frameRate: 60
   sortingLayerName: 
-  sortingOrder: 0
+  sortingOrder: 5
   animatorCullingMode: 0
   animatorController: {fileID: 9100000, guid: 7110519dd4e803a4eb142bff1f4d72cc, type: 2}
   errors: []

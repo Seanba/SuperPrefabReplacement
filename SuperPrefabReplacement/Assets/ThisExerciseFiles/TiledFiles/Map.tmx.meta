@@ -12,6 +12,12 @@ ScriptedImporter:
     100014: _MapPrfab/Map/Objects/block (3)
     100016: _MapPrfab/Map/Objects/block (4)
     100018: _MapPrfab/Map/Objects/block (5)
+    100020: _MapPrfab/Map/Objects/block/appearing-block
+    100022: _MapPrfab/Map/Objects/block (1)/appearing-block
+    100024: _MapPrfab/Map/Objects/block (2)/appearing-block
+    100026: _MapPrfab/Map/Objects/block (3)/appearing-block
+    100028: _MapPrfab/Map/Objects/block (4)/appearing-block
+    100030: _MapPrfab/Map/Objects/block (5)/appearing-block
     400000: _MapPrfab/Map/Transform
     400002: _MapPrfab/Map/Background/Transform
     400004: _MapPrfab/Map/Foreground/Transform
@@ -22,12 +28,18 @@ ScriptedImporter:
     400014: _MapPrfab/Map/Objects/block (3)/Transform
     400016: _MapPrfab/Map/Objects/block (4)/Transform
     400018: _MapPrfab/Map/Objects/block (5)/Transform
-    6100000: _MapPrfab/Map/Objects/block/BoxCollider2D
-    6100002: _MapPrfab/Map/Objects/block (1)/BoxCollider2D
-    6100004: _MapPrfab/Map/Objects/block (2)/BoxCollider2D
-    6100006: _MapPrfab/Map/Objects/block (3)/BoxCollider2D
-    6100008: _MapPrfab/Map/Objects/block (4)/BoxCollider2D
-    6100010: _MapPrfab/Map/Objects/block (5)/BoxCollider2D
+    400020: _MapPrfab/Map/Objects/block/appearing-block/Transform
+    400022: _MapPrfab/Map/Objects/block (1)/appearing-block/Transform
+    400024: _MapPrfab/Map/Objects/block (2)/appearing-block/Transform
+    400026: _MapPrfab/Map/Objects/block (3)/appearing-block/Transform
+    400028: _MapPrfab/Map/Objects/block (4)/appearing-block/Transform
+    400030: _MapPrfab/Map/Objects/block (5)/appearing-block/Transform
+    9500012: _MapPrfab/Map/Objects/block/appearing-block/Animator
+    9500014: _MapPrfab/Map/Objects/block (1)/appearing-block/Animator
+    9500016: _MapPrfab/Map/Objects/block (2)/appearing-block/Animator
+    9500018: _MapPrfab/Map/Objects/block (3)/appearing-block/Animator
+    9500020: _MapPrfab/Map/Objects/block (4)/appearing-block/Animator
+    9500022: _MapPrfab/Map/Objects/block (5)/appearing-block/Animator
     11400000: _MapPrfab/Map/MonoBehaviour-SuperTiled2Unity.SuperMap
     11400002: _MapPrfab/Map/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
     11400004: _MapPrfab/Map/Background/MonoBehaviour-SuperTiled2Unity.SuperTileLayer
@@ -38,25 +50,19 @@ ScriptedImporter:
     11400014: _MapPrfab/Map/Foreground/MonoBehaviour-SuperTiled2Unity.TilemapData
     11400016: _MapPrfab/Map/Objects/MonoBehaviour-SuperTiled2Unity.SuperObjectLayer
     11400018: _MapPrfab/Map/Objects/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
-    11400020: _MapPrfab/Map/Objects/block/MonoBehaviour-SuperTiled2Unity.SuperObject
-    11400022: _MapPrfab/Map/Objects/block/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
-    11400024: _MapPrfab/Map/Objects/block/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
-    11400026: _MapPrfab/Map/Objects/block (1)/MonoBehaviour-SuperTiled2Unity.SuperObject
-    11400028: _MapPrfab/Map/Objects/block (1)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
-    11400030: _MapPrfab/Map/Objects/block (1)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
-    11400032: _MapPrfab/Map/Objects/block (2)/MonoBehaviour-SuperTiled2Unity.SuperObject
-    11400034: _MapPrfab/Map/Objects/block (2)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
-    11400036: _MapPrfab/Map/Objects/block (2)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
-    11400038: _MapPrfab/Map/Objects/block (3)/MonoBehaviour-SuperTiled2Unity.SuperObject
-    11400040: _MapPrfab/Map/Objects/block (3)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
-    11400042: _MapPrfab/Map/Objects/block (3)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
-    11400044: _MapPrfab/Map/Objects/block (4)/MonoBehaviour-SuperTiled2Unity.SuperObject
-    11400046: _MapPrfab/Map/Objects/block (4)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
-    11400048: _MapPrfab/Map/Objects/block (4)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
-    11400050: _MapPrfab/Map/Objects/block (5)/MonoBehaviour-SuperTiled2Unity.SuperObject
-    11400052: _MapPrfab/Map/Objects/block (5)/MonoBehaviour-SuperTiled2Unity.SuperColliderComponent
-    11400054: _MapPrfab/Map/Objects/block (5)/MonoBehaviour-SuperTiled2Unity.SuperCustomProperties
+    11400020: _MapPrfab/Map/Objects/block/MonoBehaviour-AppearingBlock
+    11400022: _MapPrfab/Map/Objects/block (1)/MonoBehaviour-AppearingBlock
+    11400024: _MapPrfab/Map/Objects/block (2)/MonoBehaviour-AppearingBlock
+    11400026: _MapPrfab/Map/Objects/block (3)/MonoBehaviour-AppearingBlock
+    11400028: _MapPrfab/Map/Objects/block (4)/MonoBehaviour-AppearingBlock
+    11400030: _MapPrfab/Map/Objects/block (5)/MonoBehaviour-AppearingBlock
     11400056: _superAsset
+    21200012: _MapPrfab/Map/Objects/block/appearing-block/SpriteRenderer
+    21200014: _MapPrfab/Map/Objects/block (1)/appearing-block/SpriteRenderer
+    21200016: _MapPrfab/Map/Objects/block (2)/appearing-block/SpriteRenderer
+    21200018: _MapPrfab/Map/Objects/block (3)/appearing-block/SpriteRenderer
+    21200020: _MapPrfab/Map/Objects/block (4)/appearing-block/SpriteRenderer
+    21200022: _MapPrfab/Map/Objects/block (5)/appearing-block/SpriteRenderer
     100100000: _MapPrfab
     2569400265252428796: _MapPrfab/Map/Grid
     3664157343022684176: _MapPrfab/Map/Background/TilemapRenderer

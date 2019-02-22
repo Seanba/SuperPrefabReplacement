@@ -14,14 +14,14 @@ ScriptedImporter:
   warnings: []
   missingSortingLayers: []
   missingLayers: []
-  version: 1.1.5
+  version: 1.2.2
   pixelsPerUnit: 100
   edgesPerEllipse: 32
   animationFramerate: 20
   defaultMaterial: {instanceID: 0}
-  objectTypesXml: {instanceID: 0}
+  objectTypesXml: {fileID: 4900000, guid: 11186a75c28f0fc4cb4518a629312dd0, type: 3}
   layerColors:
-  - {r: 0.88073844, g: 0.8962264, b: 0.25787643, a: 1}
+  - {r: 0.19215688, g: 0.19215688, b: 0.19215688, a: 1}
   - {r: 1, g: 0.3882353, b: 0.2784314, a: 1}
   - {r: 0.9411765, g: 0.972549, b: 1, a: 1}
   - {r: 0.5764706, g: 0.4392157, b: 0.85882354, a: 1}
@@ -53,3 +53,7 @@ ScriptedImporter:
   - {r: 1, g: 0.64705884, b: 0, a: 1}
   - {r: 0, g: 1, b: 1, a: 1}
   - {r: 0.7372549, g: 0.56078434, b: 0.56078434, a: 1}
+  prefabReplacements:
+  - typeName: AppearingBlock
+    prefab: {fileID: 8521249863788258106, guid: 4a130a1c5ab93fb4ea9b4c55b76ee461,
+      type: 3}
