@@ -22,6 +22,7 @@ namespace SuperTiled2Unity.Editor
         public TiledAssetImporter Importer { get; set; }
         public ColliderFactory ColliderFactory { get; set; }
         public GlobalTileDatabase GlobalTileDatabase { get; set; }
+        public SuperMap SuperMap { get; set; }
 
         public float AnimationFramerate
         {
@@ -36,15 +37,24 @@ namespace SuperTiled2Unity.Editor
             Assert.IsNotNull(Importer);
             Assert.IsNotNull(ColliderFactory);
 
-            foreach (var xObject in m_Xml.Elements("object"))
+            var xObjects = m_Xml.Elements("object");
+            var drawOrder = m_Xml.GetAttributeAs<DrawOrder>("draworder", DrawOrder.TopDown);
+
+            if (drawOrder == DrawOrder.TopDown)
+            {
+                // xObjects need to be ordered by y-value
+                xObjects = xObjects.OrderBy(x => x.GetAttributeAs<float>("y", 0.0f));
+            }
+
+            foreach (var xObj in xObjects)
             {
                 // Ignore invisible objects
-                if (!xObject.GetAttributeAs<bool>("visible", true))
+                if (!xObj.GetAttributeAs<bool>("visible", true))
                 {
                     continue;
                 }
 
-                CreateObject(xObject);
+                CreateObject(xObj);
             }
         }
 
@@ -212,7 +222,7 @@ namespace SuperTiled2Unity.Editor
 
                 if (tile == null)
                 {
-                    Importer.ReportError("Missing tile '{0}' from on tile object '{1}'", justTileId, template, superObject.name);
+                    Importer.ReportError("Missing tile '{0}' on tile object '{1}'", justTileId, template, superObject.name);
                     return;
                 }
             }
@@ -254,10 +264,19 @@ namespace SuperTiled2Unity.Editor
             goCF.transform.localRotation = Quaternion.Euler(0, 0, 0);
             goCF.transform.localScale = new Vector3(flip_h ? -1 : 1, flip_v ? -1 : 1, 1);
 
+            // Note: We may not want to put the tile "back into place" depending on our coordinate system
+            var fromCenter = -toCenter;
+
+            // Isometric maps referece tile objects by bottom center
+            if (SuperMap.m_Orientation == MapOrientation.Isometric)
+            {
+                fromCenter.x -= Importer.SuperImportContext.MakeScalar(tile.m_Width * 0.5f);
+            }
+
             // Add another child, putting our coordinates back into the proper place
             var goTile = new GameObject(superObject.m_TiledName);
             goCF.AddChildWithUniqueName(goTile);
-            goTile.transform.localPosition = -toCenter;
+            goTile.transform.localPosition = fromCenter;
             goTile.transform.localRotation = Quaternion.Euler(0, 0, 0);
             goTile.transform.localScale = Vector3.one;
 
@@ -266,7 +285,7 @@ namespace SuperTiled2Unity.Editor
             renderer.sprite = tile.m_Sprite;
             renderer.color = new Color(1, 1, 1, superObject.CalculateOpacity());
             Importer.AssignMaterial(renderer);
-            Importer.AssignSortingLayer(renderer, m_ObjectLayer.m_SortingLayerName, (int)superObject.m_Y);
+            Importer.AssignSpriteSorting(renderer);
 
             // Add the animator if needed
             if (!tile.m_AnimationSprites.IsEmpty())

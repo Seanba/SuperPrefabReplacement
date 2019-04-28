@@ -34,6 +34,9 @@ namespace SuperTiled2Unity.Editor
         protected override void InternalOnImportAsset()
         {
             base.InternalOnImportAsset();
+
+            ImporterVersion = ImporterConstants.TilesetVersion;
+
             AddSuperAsset<SuperAssetTileset>();
             ImportTsxFile();
         }
@@ -55,9 +58,11 @@ namespace SuperTiled2Unity.Editor
         {
             Assert.IsNull(this.Tileset);
 
+            var icon = SuperIcons.GetTsxIcon();
+
             Tileset = ScriptableObject.CreateInstance<SuperTileset>();
             Tileset.m_IsInternal = false;
-            SuperImportContext.AddObjectToAsset("_TilesetScriptObject", Tileset, SuperImportContext.Icons.TsxIcon);
+            SuperImportContext.AddObjectToAsset("_TilesetScriptObject", Tileset, icon);
             SuperImportContext.SetMainObject(this.Tileset);
 
             var loader = new TilesetLoader(this.Tileset, this, m_UseSpriteAtlas, (int)m_AtlasWidth, (int)m_AtlasHeight);

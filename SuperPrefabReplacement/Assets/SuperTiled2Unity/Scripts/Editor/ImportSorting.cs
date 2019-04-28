@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-
-namespace SuperTiled2Unity.Editor
+﻿namespace SuperTiled2Unity.Editor
 {
-    public enum ImportSorting
+    public enum SortingMode
     {
-        Stacking = 0,
-        OverheadStatic,
-        OverheadDynamic,
+        Stacked = 0,
         CustomSortAxis,
     }
 }

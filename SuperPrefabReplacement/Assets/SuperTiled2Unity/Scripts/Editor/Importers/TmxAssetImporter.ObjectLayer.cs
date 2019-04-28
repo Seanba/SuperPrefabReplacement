@@ -15,6 +15,7 @@ namespace SuperTiled2Unity.Editor
             var loader = new SuperObjectLayerLoader(xObjectLayer);
             loader.AnimationFramerate = SuperImportContext.Settings.AnimationFramerate;
             loader.ColliderFactory = CreateColliderFactory();
+            loader.SuperMap = m_MapComponent;
             loader.Importer = this;
             loader.GlobalTileDatabase = m_GlobalTileDatabase;
 
@@ -22,9 +23,9 @@ namespace SuperTiled2Unity.Editor
             var objectLayer = goParent.AddSuperLayerGameObject<SuperObjectLayer>(loader, SuperImportContext);
             AddSuperCustomProperties(objectLayer.gameObject, xObjectLayer.Element("properties"));
 
-            m_LayerSorterHelper.SortNewLayer(objectLayer);
-
+            RendererSorter.BeginObjectLayer(objectLayer);
             loader.CreateObjects();
+            RendererSorter.EndObjectLayer(objectLayer);
 
             return objectLayer.gameObject;
         }
