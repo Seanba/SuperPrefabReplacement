@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEditor.Experimental.AssetImporters;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Tilemaps;
 
 // All tiled assets we want imported should use this class
 namespace SuperTiled2Unity.Editor
@@ -21,6 +22,9 @@ namespace SuperTiled2Unity.Editor
 #pragma warning disable 414
         [SerializeField] private int m_NumberOfObjectsImported = 0;
 #pragma warning restore 414
+
+        private RendererSorter m_RendererSorter;
+        public RendererSorter RendererSorter { get { return m_RendererSorter; } }
 
         public SuperImportContext SuperImportContext { get; private set; }
 
@@ -56,11 +60,16 @@ namespace SuperTiled2Unity.Editor
             AssignUnityLayer(component);
         }
 
-        public void AssignSortingLayer(Renderer renderer, string sortName, int sortOrder)
+        public void AssignTilemapSorting(TilemapRenderer renderer)
         {
-            CheckSortingLayerName(sortName);
-            renderer.sortingLayerName = sortName;
-            renderer.sortingOrder = sortOrder;
+            var sortLayerName = m_RendererSorter.AssignTilemapSort(renderer);
+            CheckSortingLayerName(sortLayerName);
+        }
+
+        public void AssignSpriteSorting(SpriteRenderer renderer)
+        {
+            var sortLayerName = m_RendererSorter.AssignSpriteSort(renderer);
+            CheckSortingLayerName(sortLayerName);
         }
 
         public void AssignMaterial(Renderer renderer)
@@ -74,11 +83,13 @@ namespace SuperTiled2Unity.Editor
 
         protected override void InternalOnImportAsset()
         {
+            m_RendererSorter = new RendererSorter();
             WrapImportContext(AssetImportContext);
         }
 
         protected override void InternalOnImportAssetCompleted()
         {
+            m_RendererSorter = null;
             m_NumberOfObjectsImported = SuperImportContext.GetNumberOfObjects();
         }
 
@@ -89,15 +100,8 @@ namespace SuperTiled2Unity.Editor
             if (properties.TryGetCustomProperty("unity:tag", out prop))
             {
                 string tag = prop.m_Value;
-                if (!UnityEditorInternal.InternalEditorUtility.tags.Contains(tag))
-                {
-                    string report = string.Format("Tag '{0}' is not defined in the Tags and Layers settings.", tag);
-                    ReportError(report);
-                }
-                else
-                {
-                    properties.gameObject.tag = tag;
-                }
+                CheckTagName(tag);
+                properties.gameObject.tag = tag;
             }
         }
 
@@ -131,29 +135,15 @@ namespace SuperTiled2Unity.Editor
 
         private void WrapImportContext(AssetImportContext ctx)
         {
-            var settings = ST2USettings.LoadSettings();
-            if (settings == null)
-            {
-                settings = ScriptableObject.CreateInstance<ST2USettings>();
-            }
-
-            var icons = ST2USettings.LoadIcons();
-            if (icons == null)
-            {
-                icons = ScriptableObject.CreateInstance<SuperIcons>();
-            }
+            var settings = ST2USettings.GetOrCreateST2USettings();
+            settings.RefreshCustomObjectTypes();
 
             // Create a copy of our settings that we can override based on importer settings
-            settings = GameObject.Instantiate<ST2USettings>(settings);
-            OverrideSettings(settings);
+            settings = Instantiate(settings);
+            settings.PixelsPerUnit = m_PixelsPerUnit;
+            settings.EdgesPerEllipse = m_EdgesPerEllipse;
 
-            SuperImportContext = new SuperImportContext(ctx, settings, icons);
-        }
-
-        private void OverrideSettings(ST2USettings settings)
-        {
-            settings.DefaultOrOverride_PixelsPerUnit(ref m_PixelsPerUnit);
-            settings.DefaultOrOverride_EdgesPerEllipse(ref m_EdgesPerEllipse);
+            SuperImportContext = new SuperImportContext(ctx, settings);
         }
     }
 }

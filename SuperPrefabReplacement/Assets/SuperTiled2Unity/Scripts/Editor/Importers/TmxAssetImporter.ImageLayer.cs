@@ -18,9 +18,15 @@ namespace SuperTiled2Unity.Editor
             // Create the game object that contains the layer and add it to the grid parent
             var layerComponent = goParent.AddSuperLayerGameObject<SuperImageLayer>(new SuperImageLayerLoader(xLayer), SuperImportContext);
             var goLayer = layerComponent.gameObject;
-            AddSuperCustomProperties(goLayer, xLayer.Element("properties"));
 
-            m_LayerSorterHelper.SortNewLayer(layerComponent);
+            // This sucks but we have to correct for isometric orientation for image layers
+            if (m_MapComponent.m_Orientation == MapOrientation.Isometric)
+            {
+                float dx = SuperImportContext.MakeScalar(m_MapComponent.m_Height * m_MapComponent.m_TileHeight);
+                goLayer.transform.Translate(-dx, 0, 0);
+            }
+
+            AddSuperCustomProperties(goLayer, xLayer.Element("properties"));
 
             var xImage = xLayer.Element("image");
             if (xImage != null)
@@ -46,7 +52,7 @@ namespace SuperTiled2Unity.Editor
                         renderer.sprite = sprite;
                         renderer.color = new Color(1, 1, 1, layerComponent.CalculateOpacity());
                         AssignMaterial(renderer);
-                        AssignSortingLayer(renderer, layerComponent.m_SortingLayerName, layerComponent.m_SortingOrder);
+                        AssignSpriteSorting(renderer);
                     }
                     catch (Exception e)
                     {
