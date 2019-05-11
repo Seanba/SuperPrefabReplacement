@@ -2,3 +2,6 @@
 * text=auto
 
 *.asset eol=lf
+*.meta eol=lf
+*.prefab eol=lf
+*.unity eol=lf

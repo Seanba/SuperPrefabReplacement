@@ -27,12 +27,15 @@ public class AppearingBlockManager : MonoBehaviour
 
     private IEnumerator ManageBlocks()
     {
+        var audioSource = GetComponent<AudioSource>();
+
         yield return new WaitForSeconds(2.0f);
 
         // Cycle through our groups
         while (true)
         {
             // Group 0 now active
+            audioSource.PlayOneShot(audioSource.clip);
             foreach (var block in m_AppearingBlocks)
             {
                 block.gameObject.SetActive(block.m_GroupNumber == 0);
@@ -41,6 +44,7 @@ public class AppearingBlockManager : MonoBehaviour
             yield return new WaitForSeconds(2.0f);
 
             // Group 1 now active
+            audioSource.PlayOneShot(audioSource.clip);
             foreach (var block in m_AppearingBlocks)
             {
                 block.gameObject.SetActive(block.m_GroupNumber == 1);
@@ -49,6 +53,7 @@ public class AppearingBlockManager : MonoBehaviour
             yield return new WaitForSeconds(2.0f);
 
             // Group 2 now active
+            audioSource.PlayOneShot(audioSource.clip);
             foreach (var block in m_AppearingBlocks)
             {
                 block.gameObject.SetActive(block.m_GroupNumber == 2);
