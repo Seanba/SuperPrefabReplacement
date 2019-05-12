@@ -55,7 +55,7 @@ MonoBehaviour:
   - m_Name: AppearingBlock
     m_Color: {r: 0.6666667, g: 0.6666667, b: 1, a: 1}
     m_CustomProperties:
-    - m_Name: GroupNumber
+    - m_Name: SetGroupNumber
       m_Type: int
       m_Value: 0
   m_PrefabReplacements:

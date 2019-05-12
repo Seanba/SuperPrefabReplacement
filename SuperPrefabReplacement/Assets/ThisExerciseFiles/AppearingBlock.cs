@@ -1,22 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AppearingBlock : MonoBehaviour
 {
     public int m_GroupNumber;
 
-#if UNITY_EDITOR
-    // Only allow editor scripts to set our group number property
-    // This is going to be set by custom properties from Tiled Objects in our Tiled map file
-    public int GroupNumber
+    // Called from SuperTiled2Unity Replace Prefabs feature
+    public void SetGroupNumber(int number)
     {
-        set
-        {
-            m_GroupNumber = value;
-        }
+        m_GroupNumber = number;
     }
-#endif
 }
 
