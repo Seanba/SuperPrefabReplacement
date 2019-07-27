@@ -119,12 +119,26 @@ namespace SuperTiled2Unity.Editor
                 return tilemap;
             }
 
-            // Need tilemap data if we're going to have tilemap for flips and rotations
-            go.AddComponent<TilemapData>();
-
             tilemap = go.AddComponent<Tilemap>();
-            tilemap.tileAnchor = m_MapComponent.GetTileAnchor();
+            tilemap.tileAnchor = Vector2.zero;
             tilemap.animationFrameRate = SuperImportContext.Settings.AnimationFramerate;
+
+            if (m_MapComponent.m_Orientation == MapOrientation.Hexagonal)
+            {
+                tilemap.orientation = Tilemap.Orientation.Custom;
+
+                float ox = SuperImportContext.MakeScalar(m_MapComponent.m_TileWidth) * 0.5f;
+                float oy = SuperImportContext.MakeScalar(m_MapComponent.m_TileHeight) * 0.5f;
+                tilemap.orientationMatrix = Matrix4x4.Translate(new Vector3(-ox, -oy));
+            }
+            else if (m_MapComponent.m_Orientation == MapOrientation.Isometric || m_MapComponent.m_Orientation == MapOrientation.Staggered)
+            {
+                tilemap.orientation = Tilemap.Orientation.Custom;
+
+                float ox = SuperImportContext.MakeScalar(m_MapComponent.m_TileWidth) * 0.5f;
+                tilemap.orientationMatrix = Matrix4x4.Translate(new Vector3(-ox, 0));
+            }
+
 
             AddTilemapRendererComponent(go);
 
@@ -273,16 +287,20 @@ namespace SuperTiled2Unity.Editor
             }
 
             Vector3 translate, rotate, scale;
-            tile.GetTRS(tileId.FlipFlags, out translate, out rotate, out scale);
+            tile.GetTRS(tileId.FlipFlags, m_MapComponent.m_Orientation, out translate, out rotate, out scale);
 
-            var cellPos = superMap.MapCoordinatesToPositionPPU(pos3.x, pos3.y);
+            var cellPos = superMap.CellPositionToLocalPosition(pos3.x, pos3.y);
             translate.x += cellPos.x;
-            translate.y -= cellPos.y;
+            translate.y += cellPos.y;
 
-            // If this is an isometric map than we have an additional translate to consider to place the tile
-            if (m_MapComponent.m_Orientation == MapOrientation.Isometric)
+            if (m_MapComponent.m_Orientation == MapOrientation.Isometric || m_MapComponent.m_Orientation == MapOrientation.Staggered)
             {
-                translate.y -= m_MapComponent.m_TileHeight * 0.5f * SuperImportContext.Settings.InversePPU;
+                translate.x -= SuperImportContext.MakeScalar(m_MapComponent.m_TileWidth) * 0.5f;
+            }
+            else if (m_MapComponent.m_Orientation == MapOrientation.Hexagonal)
+            {
+                translate.x -= SuperImportContext.MakeScalar(m_MapComponent.m_TileWidth) * 0.5f;
+                translate.y -= SuperImportContext.MakeScalar(m_MapComponent.m_TileHeight) * 0.5f;
             }
 
             // Add the game object for the tile
@@ -314,13 +332,11 @@ namespace SuperTiled2Unity.Editor
             // This allows us to support Tilemaps being shared by groups
             pos3.z = RendererSorter.CurrentTileZ;
 
-            // Set the flip data
-            var tilemapData = goTilemap.GetComponentInParent<TilemapData>();
-            tilemapData.SetFlipFlags(pos3, tileId.FlipFlags);
-
-            // Set the tile
+            // Set the tile (sprite, transform matrix, flags)
             var tilemap = goTilemap.GetComponentInParent<Tilemap>();
             tilemap.SetTile(pos3, tile);
+            tilemap.SetTransformMatrix(pos3, tile.GetTransformMatrix(tileId.FlipFlags, m_MapComponent.m_Orientation));
+            tilemap.SetTileFlags(pos3, TileFlags.LockAll);
 
             // Do we have any colliders on the tile to be gathered?
             m_CurrentCollisionBuilder.PlaceTileColliders(m_MapComponent, tile, tileId, pos3);

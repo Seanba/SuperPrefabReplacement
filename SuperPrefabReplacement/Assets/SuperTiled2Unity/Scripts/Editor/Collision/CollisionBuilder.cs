@@ -30,37 +30,23 @@ namespace SuperTiled2Unity.Editor
         {
             Assert.IsNotNull(m_Tilemap, "Need a Tilemap component if we are going to gather tile colliders");
 
-            // Tile y position is always off by one
-            pos.y++;
-
             // Do we have any collider objects defined for this tile?
             if (!tile.m_CollisionObjects.IsEmpty())
             {
-                var polygons = AcquireTilePolygonCollection(tile, tileId);
-
-                float cell_w = m_Tilemap.cellSize.x;
-                float cell_h = m_Tilemap.cellSize.y;
-                float halfCell_w = m_Tilemap.cellSize.x * 0.5f;
-                float halfCell_h = m_Tilemap.cellSize.y * 0.5f;
+                var polygons = AcquireTilePolygonCollection(tile, tileId, map.m_Orientation);
 
                 foreach (var poly in polygons.Polygons)
                 {
                     // Offset the polygon so that it is in the location of the tile
-                    var tileHeight = m_ImportContext.MakeScalar(tile.m_Height);
-                    var tileDiff = m_Tilemap.cellSize.y - tileHeight;
+                    var offset = map.CellPositionToLocalPosition(pos.x, pos.y);
 
-                    var offset = Vector2.zero;
-
-                    // Our offset depends on map orientation. Isometric is such a pain in the ass.
-                    if (map.m_Orientation == MapOrientation.Isometric)
+                    if (map.m_Orientation == MapOrientation.Isometric || map.m_Orientation == MapOrientation.Staggered)
                     {
-                        var x = (pos.x - pos.y) * halfCell_w;
-                        var y = (pos.x + pos.y) * halfCell_h;
-                        offset = new Vector2(x + halfCell_w, y - tileDiff);
+                        offset -= m_ImportContext.MakePointPPU(map.m_TileWidth, 0) * 0.5f;
                     }
-                    else
+                    else if (map.m_Orientation == MapOrientation.Hexagonal)
                     {
-                        offset = new Vector2(pos.x * cell_w, pos.y * cell_h - tileDiff);
+                        offset -= m_ImportContext.MakePointPPU(map.m_TileWidth, map.m_TileHeight) * 0.5f;
                     }
 
                     var points = poly.Points.Select(pt => pt + offset).ToArray();
@@ -128,7 +114,7 @@ namespace SuperTiled2Unity.Editor
                     var composite = goCollider.AddComponent<CompositeCollider2D>();
                     composite.geometryType = CompositeCollider2D.GeometryType.Polygons;
                     composite.isTrigger = key.IsTrigger;
-                    composite.generationType = CompositeCollider2D.GenerationType.Manual;
+                    composite.generationType = CompositeCollider2D.GenerationType.Synchronous;
 
                     // Add polygon colliders
                     foreach (var path in clipper.ClosedPaths)
@@ -154,13 +140,11 @@ namespace SuperTiled2Unity.Editor
                         edgeCollider.points = path;
                         edgeCollider.gameObject.AddComponent<SuperColliderComponent>();
                     }
-
-                    composite.GenerateGeometry();
                 }
             }
         }
 
-        private TilePolygonCollection AcquireTilePolygonCollection(SuperTile tile, TileIdMath tileId)
+        private TilePolygonCollection AcquireTilePolygonCollection(SuperTile tile, TileIdMath tileId, MapOrientation orientation)
         {
             TilePolygonCollection polygons;
             if (m_TilePolygonDatabase.TryGetValue(tileId.ImportedlTileId, out polygons))
@@ -169,7 +153,7 @@ namespace SuperTiled2Unity.Editor
             }
 
             // If we're here then we don't have a polygon collection for this tile yet
-            polygons = new TilePolygonCollection(tile, tileId, m_ImportContext);
+            polygons = new TilePolygonCollection(tile, tileId, m_ImportContext, orientation);
             m_TilePolygonDatabase.Add(tileId.ImportedlTileId, polygons);
             return polygons;
         }

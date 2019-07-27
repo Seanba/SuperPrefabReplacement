@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -79,6 +76,11 @@ namespace SuperTiled2Unity.Editor
 
         public static void AddChildWithUniqueName(this GameObject go, GameObject child)
         {
+            AddChildWithUniqueName(go, child, false);
+        }
+
+        public static void AddChildWithUniqueName(this GameObject go, GameObject child, bool worldPositionStays)
+        {
             if (go == null)
             {
                 return;
@@ -94,7 +96,7 @@ namespace SuperTiled2Unity.Editor
             }
 
             child.name = name;
-            child.transform.SetParent(go.transform, false);
+            child.transform.SetParent(go.transform, worldPositionStays);
         }
 
         // Creates a new object, attached to the parent, with a specialized layer component
@@ -108,10 +110,10 @@ namespace SuperTiled2Unity.Editor
 
             // Add the object to the parent
             goLayer.name = layerComponent.m_TiledName;
-            goParent.AddChildWithUniqueName(goLayer);
+            goParent.AddChildWithUniqueName(goLayer, loader.WorldPositionStays);
 
             // Position the layer based on the x, y offsets and pixels per unit
-            goLayer.transform.localPosition = importContext.MakePoint(layerComponent.m_OffsetX, layerComponent.m_OffsetY);
+            goLayer.transform.localPosition += (Vector3)importContext.MakePoint(layerComponent.m_OffsetX, layerComponent.m_OffsetY);
 
             return layerComponent;
         }

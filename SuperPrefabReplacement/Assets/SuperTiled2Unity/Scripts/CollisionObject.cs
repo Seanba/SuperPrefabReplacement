@@ -86,13 +86,12 @@ namespace SuperTiled2Unity
         }
 
         // This must be called in order for rotation and position offset to by applied
-        public void RenderPoints(SuperTile tile, MapOrientation orientation, Vector2 gridSize)
+        public void RenderPoints(SuperTile tile, GridOrientation orientation, Vector2 gridSize)
         {
-            if (orientation == MapOrientation.Isometric)
+            if (orientation == GridOrientation.Isometric)
             {
                 m_Position = IsometricTransform(m_Position, tile, gridSize);
                 m_Position.x += gridSize.x * 0.5f;
-                m_Position.y += tile.m_Height - gridSize.y;
 
                 for (int i = 0; i < m_Points.Length; i++)
                 {
@@ -106,19 +105,34 @@ namespace SuperTiled2Unity
                 }
             }
 
+            // Burn rotation into our points
             ApplyRotationToPoints();
+
+            // Burn translation into our points
             m_Points = m_Points.Select(p => p + m_Position).ToArray();
+
+            // Transform all points so that they wrt the bottom-left of the tile
+            // This should make calculations later easier since Tiled treats the bottom-left corner of a tile as the local origin
+            m_Points = m_Points.Select(p => LocalTransform(p, tile)).ToArray();
+            m_Position = LocalTransform(m_Position, tile);
         }
 
         private Vector2 IsometricTransform(Vector2 pt, SuperTile tile,Vector2 gridSize)
         {
-            float cx = pt.x / tile.m_Width;
-            float cy = pt.y / tile.m_Height;
+            float cx = pt.x / gridSize.y;
+            float cy = pt.y / gridSize.y;
 
-            float x = (cx - cy) * gridSize.x;
-            float y = (cx + cy) * gridSize.y;
+            float x = (cx - cy) * gridSize.x * 0.5f;
+            float y = (cx + cy) * gridSize.y * 0.5f;
+
+            y += (tile.m_Height - gridSize.y) * 0.5f;
 
             return new Vector2(x, y);
+        }
+
+        private Vector2 LocalTransform(Vector2 pt, SuperTile tile)
+        {
+            return new Vector2(pt.x, tile.m_Height - pt.y);
         }
 
         private void ApplyRotationToPoints()

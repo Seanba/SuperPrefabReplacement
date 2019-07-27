@@ -76,9 +76,25 @@ namespace SuperTiled2Unity.Editor
             return pt * Settings.InversePPU;
         }
 
+        // Applies PPU multiple but does not invert Y
+        public Vector2 MakePointPPU(float x, float y)
+        {
+            return MakePointPPU(new Vector2(x, y));
+        }
+
+        public Vector2 MakePointPPU(Vector2 pt)
+        {
+            return pt * Settings.InversePPU;
+        }
+
         public Vector2[] MakePoints(Vector2[] points)
         {
             return points.Select(p => MakePoint(p)).ToArray();
+        }
+
+        public Vector2[] MakePointsPPU(Vector2[] points)
+        {
+            return points.Select(p => MakePointPPU(p)).ToArray();
         }
 
         public float MakeRotation(float rot)

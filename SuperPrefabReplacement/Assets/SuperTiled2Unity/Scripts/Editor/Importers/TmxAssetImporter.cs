@@ -18,6 +18,8 @@ namespace SuperTiled2Unity.Editor
     public partial class TmxAssetImporter : TiledAssetImporter
     {
         private SuperMap m_MapComponent;
+        private Grid m_GridComponent;
+
         private GlobalTileDatabase m_GlobalTileDatabase;
         private Dictionary<uint, TilePolygonCollection> m_TilePolygonDatabase;
         private int m_ObjectIdCounter = 0;
@@ -71,6 +73,7 @@ namespace SuperTiled2Unity.Editor
             bool success = true;
             success = success && PrepareMainObject();
             success = success && ProcessMapAttributes(xMap);
+            success = success && ProcessGridObject(xMap);
             success = success && ProcessTilesetElements(xMap);
 
             if (success)
@@ -78,8 +81,8 @@ namespace SuperTiled2Unity.Editor
                 // Custom properties need to be in place before we process the map layers
                 AddSuperCustomProperties(m_MapComponent.gameObject, xMap.Element("properties"));
 
-                // Create our main grid object and add the layers to it
-                ProcessMapLayers(m_MapComponent.gameObject, xMap);
+                // Add layers to our grid object
+                ProcessMapLayers(m_GridComponent.gameObject, xMap);
             }
         }
 
@@ -88,7 +91,6 @@ namespace SuperTiled2Unity.Editor
         {
             var icon = SuperIcons.GetTmxIcon();
 
-            // The Main Gameobject is our grid containing all the layers
             var goGrid = new GameObject("_MapMainObject");
             SuperImportContext.AddObjectToAsset("_MapPrfab", goGrid, icon);
             SuperImportContext.SetMainObject(goGrid);
@@ -120,26 +122,105 @@ namespace SuperTiled2Unity.Editor
             m_MapComponent.m_BackgroundColor = xMap.GetAttributeAsColor("backgroundcolor", NamedColors.Gray);
             m_MapComponent.m_NextObjectId = xMap.GetAttributeAs<int>("nextobjectid");
 
-            // Done reading in values from Xml. Update other properties that may have depended on those settings.
-            m_MapComponent.UpdateProperties(SuperImportContext);
+            m_IsIsometric = m_MapComponent.m_Orientation == MapOrientation.Isometric;
 
-            var grid = m_MapComponent.gameObject.AddComponent<Grid>();
-            grid.cellSize = m_MapComponent.CellSize;
+            return true;
+        }
 
-            // Todo: figure out what to do about staggered and hex and Y-As-Z isometric
+        private bool ProcessGridObject(XElement xMap)
+        {
+            // Add the grid to the map
+            var goGrid = new GameObject("Grid");
+            goGrid.transform.SetParent(m_MapComponent.gameObject.transform);
+
+            // The grid is added to the asset because without it we get prefab modifications for all collision geometry and tile matrices
+            SuperImportContext.AddObjectToAsset("_grid", goGrid);
+
+            m_GridComponent = goGrid.AddComponent<Grid>();
+
+            // Grid cell size always has a z-value of 1 so that we can use custom axis sorting
+            float sx = SuperImportContext.MakeScalar(m_MapComponent.m_TileWidth);
+            float sy = SuperImportContext.MakeScalar(m_MapComponent.m_TileHeight);
+            m_GridComponent.cellSize = new Vector3(sx, sy, 1);
+            var localPosition = new Vector3(0, 0, 0);
+
             switch (m_MapComponent.m_Orientation)
             {
 #if UNITY_2018_3_OR_NEWER
                 case MapOrientation.Isometric:
-                    grid.cellLayout = GridLayout.CellLayout.Isometric;
+                    m_GridComponent.cellLayout = GridLayout.CellLayout.Isometric;
+                    localPosition = new Vector3(0, -sy, 0);
+                    break;
+
+                case MapOrientation.Staggered:
+                    m_GridComponent.cellLayout = GridLayout.CellLayout.Isometric;
+
+                    if (m_MapComponent.m_StaggerAxis == StaggerAxis.Y)
+                    {
+                        if (m_MapComponent.m_StaggerIndex == StaggerIndex.Odd)
+                        {
+                            localPosition = new Vector3(sx * 0.5f, -sy, 0);
+                        }
+                        else
+                        {
+                            localPosition = new Vector3(sx, -sy, 0);
+                        }
+                    }
+                    else if (m_MapComponent.m_StaggerAxis == StaggerAxis.X)
+                    {
+                        if (m_MapComponent.m_StaggerIndex == StaggerIndex.Odd)
+                        {
+                            localPosition = new Vector3(sx * 0.5f, -sy, 0);
+                        }
+                        else
+                        {
+                            localPosition = new Vector3(sx * 0.5f, -sy * 1.5f, 0);
+                        }
+                    }
+                    break;
+
+                case MapOrientation.Hexagonal:
+                    if (m_MapComponent.m_StaggerAxis == StaggerAxis.Y)
+                    {
+                        // Pointy-top hex maps
+                        m_GridComponent.cellLayout = GridLayout.CellLayout.Hexagon;
+                        m_GridComponent.cellSwizzle = GridLayout.CellSwizzle.XYZ;
+
+                        if (m_MapComponent.m_StaggerIndex == StaggerIndex.Odd)
+                        {
+                            localPosition = new Vector3(sx * 0.5f, sy * -0.5f, 0);
+                        }
+                        else
+                        {
+                            localPosition = new Vector3(sx * 0.5f, sy * 0.25f, 0);
+                        }
+                    }
+                    else if (m_MapComponent.m_StaggerAxis == StaggerAxis.X)
+                    {
+                        // Flat-top hex maps. Reverse x and y on size.
+                        m_GridComponent.cellLayout = GridLayout.CellLayout.Hexagon;
+                        m_GridComponent.cellSwizzle = GridLayout.CellSwizzle.YXZ;
+                        m_GridComponent.cellSize = new Vector3(sy, sx, 1);
+
+                        if (m_MapComponent.m_StaggerIndex == StaggerIndex.Odd)
+                        {
+                            localPosition = new Vector3(sx * -0.25f, -sy, 0);
+                        }
+                        else
+                        {
+                            localPosition = new Vector3(sx * 0.5f, -sy, 0);
+                        }
+                    }
                     break;
 #endif
                 default:
-                    grid.cellLayout = GridLayout.CellLayout.Rectangle;
+                    m_GridComponent.cellLayout = GridLayout.CellLayout.Rectangle;
+                    localPosition = new Vector3(0, -sy, 0);
                     break;
             }
 
-            m_IsIsometric = m_MapComponent.m_Orientation == MapOrientation.Isometric;
+            m_GridComponent.transform.localPosition = localPosition;
+
             return true;
         }
 
@@ -265,8 +346,9 @@ namespace SuperTiled2Unity.Editor
                 if (prefab != null)
                 {
                     // Replace the super object with the instantiated prefab
-                    var instance = Instantiate(prefab, so.transform.position + prefab.transform.localPosition, so.transform.rotation);
-                    instance.transform.SetParent(so.transform.parent);
+                    var instance = (GameObject)PrefabUtility.InstantiatePrefab(prefab, so.transform.parent);
+                    instance.transform.position = so.transform.position + prefab.transform.localPosition;
+                    instance.transform.rotation = so.transform.rotation;
 
                     // Apply custom properties as messages to the instanced prefab
                     var props = so.GetComponent<SuperCustomProperties>();
